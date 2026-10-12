@@ -1,0 +1,28 @@
+name: Build KernelSU LKM
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout DDK
+        uses: actions/checkout@v4
+
+      - name: Pull DDK source
+        run: git clone https://github.com/Ylarod/ddk.git .
+
+      - name: Install python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements.txt
+
+      - name: Compile KernelSU
+        run: |
+          python3 kmod/build.py --kmi 6.1-android14-11 --source https://github.com/tiann/KernelSU.git#main
+
+      - name: Upload ko
+        uses: actions/upload-artifact@v4
+        with:
+          name: KSU-ko
+          path: out/
