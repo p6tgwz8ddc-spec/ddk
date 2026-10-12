@@ -1,0 +1,26 @@
+name: Build KernelSU LKM
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下载DDK源码
+        uses: actions/checkout@v4
+        repository: Ylarod/ddk
+        ref: main
+
+      - name: 安装Python依赖
+        run: |
+          python3 -m pip install -r requirements.txt
+
+      - name: 编译KSU模块
+        run: |
+          python3 kmod/build.py --kmi 6.1-android14-11 --source https://github.com/tiann/KernelSU.git#main
+
+      - name: 上传编译好的ko文件
+        uses: actions/upload-artifact@v4
+        with:
+          name: KSU模块
+          path: out/
