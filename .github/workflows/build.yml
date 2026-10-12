@@ -1,0 +1,17 @@
+name: Build KSU LKM
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build LKM 6.1-android14-11
+        uses: Ylarod/ddk/.github/workflows/ddk-lkm.yml@main
+        with:
+          kmi: 6.1-android14-11
+          source: https://github.com/tiann/KernelSU.git#main
+      - name: Upload ko
+        uses: actions/upload-artifact@v4
+        with:
+          name: ksu-lkm
+          path: out/*.ko
