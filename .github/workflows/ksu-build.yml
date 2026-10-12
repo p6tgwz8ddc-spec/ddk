@@ -1,0 +1,10 @@
+name: Build KSU LKM
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: Ylarod/ddk/.github/workflows/ddk-lkm.yml@main
+    with:
+      kmi: 6.1-android14-11
+      source: https://github.com/tiann/KernelSU.git#main
